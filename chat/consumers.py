@@ -1,4 +1,3 @@
-
 # chat/consumers.py
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer #동기적과는 다르게 WebsocketConsumer를 상속 받음.
@@ -14,8 +13,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-        await self.accept()
+        # 몇명 들어와있는지 찾는 부분!!!
+        # self.count 에 몇명 들어와있는지가 기록!!
+        async with self.channel_layer.connection(self.channel_layer.consistent_hash(self.channel_layer._group_key(self.room_group_name))) as connection:
+            self.count = await connection.zcount(self.channel_layer._group_key(self.room_group_name))
+                #connet: 참여할때마다 불러주는 함수
+                #receive: 사람들이 보낼때마다 불러주는 함수 
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'username': 'admin',
+                'message': f'{self.count} 명 입장하였습니다 '
+            }
+        )
 
+        await self.accept()
     async def disconnect(self, close_code):
         # Leave room group
         await self.channel_layer.group_discard(

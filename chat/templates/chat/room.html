@@ -1,10 +1,12 @@
 <!-- chat/templates/chat/room.html -->
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>Chat Room</title>
 </head>
+
 <body>
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
@@ -12,10 +14,10 @@
 
     <div id="user-hello"> </div>
     {{ room_name|json_script:"room-name" }}
-    {{ request.user.username|json_script:"user_username" }}{% comment %} -->{% endcomment %}
+    {{ request.user.username|json_script:"user_username" }}
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
-        const user_username = JSON.parse(document.getElementById('user_username').textContent) {% comment %} -->{% endcomment %}
+        const user_username = JSON.parse(document.getElementById('user_username').textContent)
 
         const chatSocket = new WebSocket(
             'ws://'
@@ -25,32 +27,44 @@
             + '/'
         );
 
-        chatSocket.onmessage = function(e) {
+        chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             console.log(data)
             document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
         };
 
-        chatSocket.onclose = function(e) {
+        chatSocket.onclose = function (e) {
             console.error('Chat socket closed unexpectedly');
         };
 
         document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
+        document.querySelector('#chat-message-input').onkeyup = function (e) {
             if (e.keyCode === 13) {  // enter, return
                 document.querySelector('#chat-message-submit').click();
             }
         };
 
-        document.querySelector('#chat-message-submit').onclick = function(e) {
+        document.querySelector('#chat-message-submit').onclick = function (e) {
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
                 'message': message,
-                'username': user_username, {% comment %} -->{% endcomment %}
+                'username': getCookie('nickname'),
             }));
             messageInputDom.value = '';
         };
+        function getCookie(cookie_name) {
+            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {
+                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기 
+                if (x == cookie_name) {
+                    return unescape(y); // unescape로 디코딩 후 값 리턴 
+                }
+            }
+        }
+// getCookie : 쿠키에 키가 있으면 꺼내옴?(처음에 입력해 준 값.)
+
+
     </script>
 </body>
+
 </html>

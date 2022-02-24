@@ -1,28 +1,58 @@
 <!-- chat/templates/chat/index.html -->
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>Chat Rooms</title>
 </head>
+
 <body>
     What chat room would you like to enter?<br>
     <input id="room-name-input" type="text" size="100"><br>
-    <input id="room-name-submit" type="button" value="Enter"><br>
-    <input id="user_nickname" type="text" size="100" placeholder="put your nickname!" ><br>
-     <input id="nickname-submit" type="button" value="Send">
+    <input id="user_nickname" type="text" size="100" placeholder="put your nickname!"><br>
+    <input id="room-name-submit" type="button" value="Send">
     <script>
         document.querySelector('#room-name-input').focus();
-        document.querySelector('#room-name-input').onkeyup = function(e) {
+        document.querySelector('#room-name-input').onkeyup = function (e) {
             if (e.keyCode === 13) {  // enter, return
                 document.querySelector('#room-name-submit').click();
             }
         };
 
-        document.querySelector('#room-name-submit').onclick = function(e) {
+
+        document.querySelector('#room-name-submit').onclick = function (e) {
             var roomName = document.querySelector('#room-name-input').value;
+            const nickname = document.querySelector('#user_nickname').value
+            console.log(nickname)
+            document.cookie = `nickname=${nickname}`
             window.location.pathname = '/chat/' + roomName + '/';
         };
+
+
+        // function login()
+        // const room = document.querySelector("#room-name-input")
+        // $.ajax({
+        //     type: "POST",
+        //     url: `/chat/${room}`,
+        //     data: { "id_give": $('#user_nickname').val(), "room_give": $('#room-name-input').val() },
+        //     success: function (response) {
+        //         if (response['result'] == 'success') {
+        //             // 로그인이 정상적으로 되면, 토큰을 받아옵니다.#}
+        //             // 이 토큰을 mytoken이라는 키 값으로 쿠키에 저장합니다.#}
+        //             $.cookie('mytoken', response['token']);
+
+        //             swal('로그인 완료!').then(function () {
+        //                 window.location.href = '/ ???? '
+
+        //             })
+        //         } else {
+        //             // 로그인이 안되면 에러메시지를 띄웁니다.#}
+        //             swal(response['msg']);
+        //         }
+        //     }
+        // })
     </script>
 </body>
+
 </html>

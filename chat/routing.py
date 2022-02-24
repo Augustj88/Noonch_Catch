@@ -16,3 +16,20 @@ websocket_urlpatterns = [
 #이 메서드는 요청별로 장고 뷰 인스턴스를 만들어주는 as_view()와 유사.
 # as_view? Any arguments passed to as_view() will override attributes set on the class,
 #A similar overriding pattern can be used for the url attribute on RedirectView.
+
+#
+# # myproject / routing.py
+# from channels.routing import ProtocolTypeRouter, URLRouter
+# from channels.auth import AuthMiddlewareStack
+# from django.urls import path
+# from accounts.consumers import NewUserConsumer
+# 
+# application = ProtocolTypeRouter({
+#     'websocket': AuthMiddlewareStack(
+#         URLRouter(
+#             [
+#                 path("new-user /", NewUserConsumer),
+#             ]
+#         )
+#     )
+# })
