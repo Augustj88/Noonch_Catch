@@ -1,17 +1,27 @@
 <!-- chat/templates/chat/index.html -->
+{% load static %}
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Chat Rooms</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <audio id="audio" src="../static/audio/bgm.mp3" autoplay="autoplay" onloadstart="this.volume=0.05" loop="loop"></audio>
+    <title>Title</title>
 </head>
-
 <body>
-    What chat room would you like to enter?<br>
-    <input id="room-name-input" type="text" size="100"><br>
-    <input id="user_nickname" type="text" size="100" placeholder="put your nickname!"><br>
-    <input id="room-name-submit" type="button" value="Send">
+    <div id="logo">
+        <img src="../static/img/logo2.gif">
+    </div>
+    <div id="buttons">
+        <input id="room-name-input" type="text" placeholder="room name">
+        <input id="user_nickname" type="text" placeholder="user name">
+        <input id="room-name-submit" type="button" value="Let's Start!">
+    </div>
+    <div id="teamname">
+        <img src="../static/img/teamname.png">
+    </div>
+
     <script>
         document.querySelector('#room-name-input').focus();
         document.querySelector('#room-name-input').onkeyup = function (e) {
