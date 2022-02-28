@@ -13,7 +13,7 @@
 <h2>:mage: 맴버구성
 
 <h3> 
- <a href="https://github.com/Paige1996/Honflix/graphs/contributors">
+ <a href="https://github.com/Paige1996/Noonch_catch/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Paige1996/Honflix" />
   <img width="50px" src="https://avatars.githubusercontent.com/u/96567093?s=64&amp;v=4" />
 </a>
