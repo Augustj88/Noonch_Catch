@@ -1,0 +1,34 @@
+*{font-family: 'Jua', sans-serif;}
+body{
+    margin: 0 auto;
+    background-image: url('../../static/image/background.png');
+    background-size: cover;
+    background-position: bottom;
+}
+#logo-wrap{
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+}
+#logo-wrap img{
+    width: 20%;
+    margin-top: 30px;
+}
+#bgm-icon-wrap{
+    position: absolute;
+    margin: 20px;
+    z-index: 5;
+}
+.bgm-icon{
+    width: 50px;
+}
+#bgm-off{
+    display: none;
+}
+#Audio{
+    display: none;
+}
+#eunjoo{
+    display: none;
+}

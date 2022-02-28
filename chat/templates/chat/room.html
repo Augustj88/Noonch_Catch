@@ -1,21 +1,322 @@
 <!-- chat/templates/chat/room.html -->
+{% load static %}
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Chat Room</title>
+    {% block others %}
+    {% endblock %}
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href="{% static 'css/base.css' %}">
+    <link rel='stylesheet' href="{% static 'css/main.css' %}">
+    <link rel='stylesheet' href="{% static 'css/play.css' %}">
+    <link rel="shortcut icon" href="{% static 'image/favicon01.ico' %}"> <!--파비콘설정-->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> <!--JQuery사용하기 위함-->
+
+    <meta charset="UTF-8">
+    <title>Noonch_Catch</title>
 </head>
+<script>
+    $(document).ready(function(){
+        const bgmOn = $('#bgm-on') //bgm-on 아이콘
+        const bgmOff = $('#bgm-off') //bgm off 아이콘
+        const MyAudio = $('#MyAudio') //HTML <audio>태그
+
+        bgmOn.click(function(){ //bgm-on 아이콘 클릭 했을 때
+            bgmOn.hide(); //bgm-on 아이콘 숨기고
+            bgmOff.show(); //bgm-off 아이콘 보여줌
+            MyAudio.trigger("pause"); //오디오 멈춤
+        });
+
+        bgmOff.click(function(){ //bgm-off 아이콘 클릭 했을 때
+            bgmOff.hide(); //bgm-off 아이콘 숨기고
+            bgmOn.show(); //bgm-on 아이콘 보여줌
+            MyAudio.trigger("play"); //오디오 다시 재생
+        });
+    });
+
+    //start버튼 눌렀을 때, html다르게 띄우기
+    $(document).ready(function(){
+        const showPlay = $('#play-container')
+        const showMain = $('#main-container')
+        const playBtn = $('#start-btn')
+
+        playBtn.click(function(){
+           showMain.hide();
+           showPlay.show();
+        });
+    });
+
+</script>
 
 <body>
-    <input id="user_in" type="text" size="100">
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send">
+    <!--공통-->
+    <div id="bgm-icon-wrap">
+        <img id="bgm-on" class="bgm-icon" data-play="1" src="{% static 'image/icon_bgmon.png' %}"/>
+        <img id="bgm-off" class="bgm-icon" data-play="0" src="{% static 'image/icon_bgmoff.png' %}"/>
+    </div>
+    <audio id="MyAudio" autoplay loop>
+        <source id="Audio" class="audio" src="{% static 'image/Bubble%20Bath%20-%20The%20Green%20Orbs.mp3' %}" allow="autoplay" type="audio/mp3"/>
+    </audio>
+    <div id="logo-wrap">
+        <img id="main-logo" src="{% static 'image/noonch_catch2.gif' %}">
+    </div>
+
+    <!--main/대기화면-->
+    <div id="main-container">
+        <div id="profile-box">
+            <div class="profile-user-box">
+                <div class="profile-user" id="profile-me">
+                    <div class="profile-img-box">
+                        <img class="profile-img" src="{% static 'image/pp1.png' %}">
+                    </div>
+                    <p>user01</p>
+                </div>
+                <div class="profile-user">
+                    <div class="profile-img-box">
+                        <img class="profile-img" src="{% static 'image/pp2.png' %}">
+                    </div>
+                    <p>user02</p>
+                </div>
+                <div class="profile-user">
+                    <div class="profile-img-box">
+                        <img class="profile-img" src="{% static 'image/pp3.png' %}">
+                    </div>
+                    <p>user03</p>
+                </div>
+                <div class="profile-user">
+                    <div class="profile-img-box">
+                        <img class="profile-img" src="{% static 'image/pp4.png' %}">
+                    </div>
+                    <p>user04</p>
+                </div>
+                <div class="profile-user">
+                    <div class="profile-img-box">
+                        <img class="profile-img" src="{% static 'image/pp5.png' %}">
+                    </div>
+                    <p>user05</p>
+                </div>
+            </div>
+            <input id="start-btn" type="button" value="START GAME">
+        </div>
+    </div>
+
+    <!--게임창-->
+    <div id="play-container" style="display:none;">
+        <div id="play-box">
+            <!-- player list section -->
+            <div id="player-list-box">
+                <div class="player-box">
+                    <div class="player-img">
+                        <img src="{% static 'image/pp1.png' %}">
+                    </div>
+                    <div class="player-info">
+                        <p class="name">user01</p>
+                        <p class="score">score: <span id="score01">0</span>/10</p>
+                    </div>
+                </div>
+                <div class="player-box">
+                    <div class="player-img">
+                        <img src="{% static 'image/pp2.png' %}">
+                    </div>
+                    <div class="player-info">
+                        <p class="name">user02</p>
+                        <p class="score">score: <span>6</span>/10</p>
+                    </div>
+                </div>
+                <div class="player-box">
+                    <div class="player-img">
+                        <img src="{% static 'image/pp3.png' %}">
+                    </div>
+                    <div class="player-info">
+                        <p class="name">user03</p>
+                        <p class="score">score: <span>8</span>/10</p>
+                    </div>
+                </div>
+                <div class="player-box">
+                    <div class="player-img">
+                        <img src="{% static 'image/pp4.png' %}">
+                    </div>
+                    <div class="player-info">
+                        <p class="name">user04</p>
+                        <p class="score">score: 8/10</p>
+                    </div>
+                </div>
+                <div class="player-box" style="border-bottom:none;">
+                    <div class="player-img">
+                        <img src="{% static 'image/pp5.png' %}">
+                    </div>
+                    <div class="player-info">
+                        <p class="name">user05</p>
+                        <p class="score">score: <span>4</span>/10</p>
+                    </div>
+                </div>
+            </div>
+             <!-- Chat section -->
+            <div id="chat-box">
+                <div id="swiper-container">
+                    <div id="swiper-wrapper">
+                        <!--슬라이드 내용 / chat대화-->
+                        <div id="swiper-slide-wrap">
+                            <input id="user-in" type="text">
+                            <input id="chat-log" type="textarea">
+                            <div class="my-swiper-slide">
+                                <div class="chat-name">myname</div>
+                                <span class="my-chat-text">안녕하세요??</span>
+                            </div>
+                            <div class="other-swiper-slide">
+                                <div class="chat-name">username</div>
+                                <span class="other-chat-text">안녕하세요??</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="chat-typing-box">
+                    <input id="chat-input" type="text" placeholder="채팅을 입력하세요. :-)">
+                    <button id="btn-chat" type="button">
+                        <img id="test" src="{% static 'image/icon_up.png' %}"/>
+                    </button>
+                </div>
+            </div>
+            <!-- Draw section -->
+            <div id="draw-box">
+                <div id="draw-img">
+                    <div id="answer-container">
+                        <div id="answer-wrap">
+                            <div id="correct">✨정답입니다!</div>
+                            <div id="wrong">⚡오답입니다!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Answer Modal Window-->
+        <div id="modal-container">
+            <div id="modal-wrapper">
+                <img id="complete" src="{% static 'image/Level_complete.gif' %}"/>
+                <img id="failed" src="{% static 'image/Level_failed.gif' %}"/>
+                <img id="confetti-win" class="confetti" src="{% static 'image/confetti2.gif' %}"/>
+                <img id="confetti-lose" class="confetti" src="{% static 'image/rain.gif' %}"/>
+            </div>
+
+        </div>
+    </div>
+
+
+<div id="eunjoo">
+    <!--Eunjoo-->
+    유저입장창<input id="user_in" type="text" size="100">
+    모든대화<textarea id="chat-log" cols="100" rows="20"></textarea><br>
+    입력창<input id="chat-message-input" type="text" size="100"><br>
+    버튼<input id="chat-message-submit" type="button" value="Send">
 
     <div id="user-hello"> </div>
     {{ room_name|json_script:"room-name" }}
     {{ request.user.username|json_script:"user_username" }}
+</div>
+
+{#    <script>#}
+{#        const roomName = JSON.parse(document.getElementById('room-name').textContent);#}
+{#        const user_username = JSON.parse(document.getElementById('user_username').textContent)#}
+{##}
+{#        const chatSocket = new WebSocket(#}
+{#            'ws://'#}
+{#            + window.location.host#}
+{#            + '/ws/chat/'#}
+{#            + roomName#}
+{#            + '/'#}
+{#        );#}
+{##}
+{#        chatSocket.onmessage = function (e) {#}
+{#            const data = JSON.parse(e.data);#}
+{#            console.log(data)#}
+{#            document.querySelector('#swiper-slide-wrap').value += (data.username + ': ' + data.message + '\n');#}
+{#            document.querySelector('#user-in').text += (getCookie('nickname') + ', ');#}
+{#        };#}
+{##}
+{#        chatSocket.onclose = function (e) {#}
+{#            console.error('Chat socket closed unexpectedly');#}
+{#        };#}
+{##}
+{#        document.querySelector('#chat-input').focus();#}
+{#        document.querySelector('#chat-input').onkeyup = function (e) {#}
+{#            if (e.keyCode === 13) {  // enter, return#}
+{#                document.querySelector('#test').click();#}
+{#            }#}
+{#        };#}
+{##}
+{#        document.querySelector('#test').onclick = function (e) {#}
+{#            const messageInputDom = document.querySelector('#chat-input');#}
+{#            const message = messageInputDom.value;#}
+{#            chatSocket.send(JSON.stringify({#}
+{#                'message': message,#}
+{#                'username': getCookie('nickname'),#}
+{#            }));#}
+{#            messageInputDom.value = '';#}
+{#        };#}
+{#        function getCookie(cookie_name) {#}
+{#            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {#}
+{#                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기#}
+{#                if (x == cookie_name) {#}
+{#                    return unescape(y); // unescape로 디코딩 후 값 리턴#}
+{#                }#}
+{#            }#}
+{#        }#}
+{##}
+{#    </script>#}
+
+
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const user_username = JSON.parse(document.getElementById('user_username').textContent)
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            console.log(data)
+            document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
+            document.querySelector('#user-in').text += (getCookie('nickname') + ', ');
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-input').focus();
+        document.querySelector('#chat-input').onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#test').click();
+            }
+        };
+
+        document.querySelector('#test').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'username': getCookie('nickname'),
+            }));
+            messageInputDom.value = '';
+        };
+        function getCookie(cookie_name) {
+            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {
+                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
+                if (x == cookie_name) {
+                    return unescape(y); // unescape로 디코딩 후 값 리턴
+                }
+            }
+        }
+
+    </script>
+
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const user_username = JSON.parse(document.getElementById('user_username').textContent)
