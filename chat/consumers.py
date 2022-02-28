@@ -3,9 +3,14 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer #동기적과는 다르게 WebsocketConsumer를 상속 받음.
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    #connet: 참여할때마다 불러주는 함수
+    #receive: 사람들이 메시지 보낼때마다 불러주는 함수 
+    # #모든 연결을 accept하고, 클라이언트로부터 메시지를 receive하고, 동일한 client에게
+    # #다시 이 메시지를 send해줌
     async def connect(self): #동기적과는 다르게 모든 메서드들이 그냥 def가 아니라 async def이다!
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
+
 
         # Join room group
         await self.channel_layer.group_add( #입출력 작업을 수행하는 비동기 함수를 호출하기 위해 await가 사용
@@ -14,21 +19,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
         # 몇명 들어와있는지 찾는 부분!!!
-        # self.count 에 몇명 들어와있는지가 기록!!
+        # self.count 에 몇명 들어와있는지가 기록!! #zcount: redis쪽에서 추가된 connection수를 가져오는 것 
+        print(self.scope["headers"]) #cookie하면 닉네임을 찾을 수 있음  -> 입력된 값을 잡아서 내주기!
         async with self.channel_layer.connection(self.channel_layer.consistent_hash(self.channel_layer._group_key(self.room_group_name))) as connection:
-            self.count = await connection.zcount(self.channel_layer._group_key(self.room_group_name))
-                #connet: 참여할때마다 불러주는 함수
-                #receive: 사람들이 보낼때마다 불러주는 함수 
+            self.count = await connection.zcount(self.channel_layer._group_key(self.room_group_name)) #zcount: redis쪽에서 추가된 connection수를 가져오는 것 
+
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
                 'username': 'admin',
-                'message': f'{self.count} 명 입장하였습니다 '
+                'message': f'{self.count} 명 입장하였습니다'
             }
         )
 
         await self.accept()
+
     async def disconnect(self, close_code):
         # Leave room group
         await self.channel_layer.group_discard(
@@ -49,7 +55,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': message ,
-                'username' : username, # -->
+                'username' : username,
             }
         )
 
@@ -75,8 +81,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 # from channels.generic.websocket import WebsocketConsumer
 #
 #
-# #모든 연결을 accept하고, 클라이언트로부터 메시지를 receive하고, 동일한 client에게
-# #다시 이 메시지를 send해줌
 # #즉 유저가 메시지를 전송 -> 자바스크립트 함수는 웹 소캣을 통해 chatConsumer로 전송 -> chatConsumer는 메시지를 받아
 # #-> 채팅방 이름에 해당하는 그룹으로 전파. 같은 그룹안에 있는 모든 chatConsumer는 그룹으로부터 메시지를 전달받아 -> 웹소켓을통해
 # #자바스크립트로 이를 돌려주고 -> 채팅 로그에 메시지가 추가됨.
