@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <input id="user_in" type="text" size="100">
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
@@ -31,6 +32,7 @@
             const data = JSON.parse(e.data);
             console.log(data)
             document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
+            document.querySelector('#user_in').value += (getCookie('nickname') + ', ');
         };
 
         chatSocket.onclose = function (e) {
@@ -61,8 +63,6 @@
                 }
             }
         }
-// getCookie : 쿠키에 키가 있으면 꺼내옴?(처음에 입력해 준 값.)
-
 
     </script>
 </body>
