@@ -1,9 +1,7 @@
-# from django.db import models
+from django.db import models
+
+
 #
-#
-# class UserGroup(models.Model):
-#
-#     class Meta:
-#         db_table = "my_user" # 여기는 테이블 이름입니다
-#
-#     nickname = models.CharField(unique=True, max_length=20)
+class Room(models.Model):
+    roomname = models.CharField(max_length=20)
+    nickname = models.CharField(max_length=20)

@@ -15,6 +15,11 @@
 
     <meta charset="UTF-8">
     <title>Noonch_Catch</title>
+    <script>
+    $.ajaxSetup({
+        headers: { "X-CSRFToken": '{{csrf_token}}' }
+    });
+    </script>
 </head>
 <script>
     $(document).ready(function(){
@@ -70,31 +75,31 @@
                     <div class="profile-img-box">
                         <img class="profile-img" src="{% static 'image/pp1.png' %}">
                     </div>
-                    <p>user01</p>
+                    <p class="user0"></p>
                 </div>
                 <div class="profile-user">
                     <div class="profile-img-box">
                         <img class="profile-img" src="{% static 'image/pp2.png' %}">
                     </div>
-                    <p>user02</p>
+                    <p class="user1"></p>
                 </div>
                 <div class="profile-user">
                     <div class="profile-img-box">
                         <img class="profile-img" src="{% static 'image/pp3.png' %}">
                     </div>
-                    <p>user03</p>
+                    <p class="user2"></p>
                 </div>
                 <div class="profile-user">
                     <div class="profile-img-box">
                         <img class="profile-img" src="{% static 'image/pp4.png' %}">
                     </div>
-                    <p>user04</p>
+                    <p class="user3"></p>
                 </div>
                 <div class="profile-user">
                     <div class="profile-img-box">
                         <img class="profile-img" src="{% static 'image/pp5.png' %}">
                     </div>
-                    <p>user05</p>
+                    <p class="user4"></p>
                 </div>
             </div>
             <input id="start-btn" type="button" value="START GAME">
@@ -111,7 +116,7 @@
                         <img src="{% static 'image/pp1.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name">user01</p>
+                        <p class="user0"></p>
                         <p class="score">score: <span id="score01">0</span>/10</p>
                     </div>
                 </div>
@@ -120,7 +125,7 @@
                         <img src="{% static 'image/pp2.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name">user02</p>
+                        <p class="user1"></p>
                         <p class="score">score: <span>6</span>/10</p>
                     </div>
                 </div>
@@ -129,7 +134,7 @@
                         <img src="{% static 'image/pp3.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name">user03</p>
+                        <p class="user2"></p>
                         <p class="score">score: <span>8</span>/10</p>
                     </div>
                 </div>
@@ -138,7 +143,7 @@
                         <img src="{% static 'image/pp4.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name">user04</p>
+                        <p class="user3"></p>
                         <p class="score">score: 8/10</p>
                     </div>
                 </div>
@@ -147,7 +152,7 @@
                         <img src="{% static 'image/pp5.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name">user05</p>
+                        <p class="user4"></p>
                         <p class="score">score: <span>4</span>/10</p>
                     </div>
                 </div>
@@ -158,7 +163,6 @@
                     <div id="swiper-wrapper">
                         <!--슬라이드 내용 / chat대화-->
                         <div id="swiper-slide-wrap">
-                            <input id="user-in" type="text">
                             <input id="chat-log" type="textarea">
                             <div class="my-swiper-slide">
                                 <div class="chat-name">myname</div>
@@ -168,13 +172,12 @@
                                 <div class="chat-name">username</div>
                                 <span class="other-chat-text">안녕하세요??</span>
                             </div>
-
                         </div>
                     </div>
                 </div>
                 <div id="chat-typing-box">
-                    <input id="chat-input" type="text" placeholder="채팅을 입력하세요. :-)">
-                    <button id="btn-chat" type="button">
+                    <input id="chat-message-input" type="text" placeholder="채팅을 입력하세요. :-)">
+                    <button id="chat-message-submit" type="button">
                         <img id="test" src="{% static 'image/icon_up.png' %}"/>
                     </button>
                 </div>
@@ -204,67 +207,15 @@
     </div>
 
 
-<div id="eunjoo">
-    <!--Eunjoo-->
-    유저입장창<input id="user_in" type="text" size="100">
-    모든대화<textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    입력창<input id="chat-message-input" type="text" size="100"><br>
-    버튼<input id="chat-message-submit" type="button" value="Send">
+{#    <!--Eunjoo-->#}
+{#    유저입장창<input id="user_in" type="text" size="100">#}
+{#    모든대화<textarea id="chat-log" cols="100" rows="20"></textarea><br>#}
+{#    입력창<input id="chat-message-input" type="text" size="100"><br>#}
+{#    버튼<input id="chat-message-submit" type="button" value="Send">#}
 
     <div id="user-hello"> </div>
     {{ room_name|json_script:"room-name" }}
     {{ request.user.username|json_script:"user_username" }}
-</div>
-
-{#    <script>#}
-{#        const roomName = JSON.parse(document.getElementById('room-name').textContent);#}
-{#        const user_username = JSON.parse(document.getElementById('user_username').textContent)#}
-{##}
-{#        const chatSocket = new WebSocket(#}
-{#            'ws://'#}
-{#            + window.location.host#}
-{#            + '/ws/chat/'#}
-{#            + roomName#}
-{#            + '/'#}
-{#        );#}
-{##}
-{#        chatSocket.onmessage = function (e) {#}
-{#            const data = JSON.parse(e.data);#}
-{#            console.log(data)#}
-{#            document.querySelector('#swiper-slide-wrap').value += (data.username + ': ' + data.message + '\n');#}
-{#            document.querySelector('#user-in').text += (getCookie('nickname') + ', ');#}
-{#        };#}
-{##}
-{#        chatSocket.onclose = function (e) {#}
-{#            console.error('Chat socket closed unexpectedly');#}
-{#        };#}
-{##}
-{#        document.querySelector('#chat-input').focus();#}
-{#        document.querySelector('#chat-input').onkeyup = function (e) {#}
-{#            if (e.keyCode === 13) {  // enter, return#}
-{#                document.querySelector('#test').click();#}
-{#            }#}
-{#        };#}
-{##}
-{#        document.querySelector('#test').onclick = function (e) {#}
-{#            const messageInputDom = document.querySelector('#chat-input');#}
-{#            const message = messageInputDom.value;#}
-{#            chatSocket.send(JSON.stringify({#}
-{#                'message': message,#}
-{#                'username': getCookie('nickname'),#}
-{#            }));#}
-{#            messageInputDom.value = '';#}
-{#        };#}
-{#        function getCookie(cookie_name) {#}
-{#            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {#}
-{#                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기#}
-{#                if (x == cookie_name) {#}
-{#                    return unescape(y); // unescape로 디코딩 후 값 리턴#}
-{#                }#}
-{#            }#}
-{#        }#}
-{##}
-{#    </script>#}
 
 
     <script>
@@ -283,57 +234,27 @@
             const data = JSON.parse(e.data);
             console.log(data)
             document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
-            document.querySelector('#user-in').text += (getCookie('nickname') + ', ');
-        };
+            {#document.querySelector('#user_in').value += (getCookie('nickname') + ', ');#}
+            $.ajax({
+                url: "{% url 'user' %}",
+                type: "POST",
+                data: JSON.stringify({'roomname': roomName}),
+                success: function(resultData) {
+                     {#TODO : 결과로 받은 resultData로 작업 !#}
+                    console.log(resultData)
 
-        chatSocket.onclose = function (e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-
-        document.querySelector('#chat-input').focus();
-        document.querySelector('#chat-input').onkeyup = function (e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#test').click();
-            }
-        };
-
-        document.querySelector('#test').onclick = function (e) {
-            const messageInputDom = document.querySelector('#chat-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message,
-                'username': getCookie('nickname'),
-            }));
-            messageInputDom.value = '';
-        };
-        function getCookie(cookie_name) {
-            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {
-                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
-                if (x == cookie_name) {
-                    return unescape(y); // unescape로 디코딩 후 값 리턴
+                    for (i in resultData) {
+                        for ( j of document.getElementsByClassName(`user${i}`))
+                        {
+                            j.innerText = resultData[i]
+                        }
+                        console.log(i, resultData[i])
+                    }
+                },
+                error: function(error) {
+                    console.log(error)
                 }
-            }
-        }
-
-    </script>
-
-    <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
-        const user_username = JSON.parse(document.getElementById('user_username').textContent)
-
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + roomName
-            + '/'
-        );
-
-        chatSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            console.log(data)
-            document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
-            document.querySelector('#user_in').value += (getCookie('nickname') + ', ');
+            });
         };
 
         chatSocket.onclose = function (e) {
@@ -358,9 +279,9 @@
         };
         function getCookie(cookie_name) {
             var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {
-                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기 
+                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
                 if (x == cookie_name) {
-                    return unescape(y); // unescape로 디코딩 후 값 리턴 
+                    return unescape(y); // unescape로 디코딩 후 값 리턴
                 }
             }
         }

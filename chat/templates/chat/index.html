@@ -26,17 +26,16 @@
         document.querySelector('#room-name-input').focus();
         document.querySelector('#room-name-input').onkeyup = function (e) {
             if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#room-name-submit').click(); //submiting the inputs 
+                document.querySelector('#room-name-submit').click(); //submiting the inputs
             }
         };
-
 
         document.querySelector('#room-name-submit').onclick = function (e) {
             var roomName = document.querySelector('#room-name-input').value;
             const nickname = document.querySelector('#user_nickname').value
             console.log(nickname)
-            document.cookie = `nickname=${nickname}`
-            window.location.pathname = '/chat/' + roomName + '/';
+            document.cookie = `nickname=${nickname}; path=/;`
+            window.location.pathname = '/chat/room/' + roomName + '/';
         };
 
     </script>
