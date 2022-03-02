@@ -36,9 +36,9 @@ DEBUG = True
 #        'http://3.34.189.140:5000',
 #
 # )
-
-ALLOWED_HOSTS=['*']
-CORS_ORIGIN_ALLOW_ALL = True
+#
+# ALLOWED_HOSTS=['*']
+# CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Application definition
