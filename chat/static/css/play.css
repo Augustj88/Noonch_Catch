@@ -1,4 +1,4 @@
-#play-container{
+#play-container{ /*HTML에서 display:none, display: none값 이미 있어서*/
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -63,8 +63,13 @@
     margin-top: 20px;
 }
 #swiper-wrapper{
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     height: 400px;
+    display: flex;
+    flex-direction: column;
+    /*flex-direction: column-reverse;*/
+    overflow-y:auto;
+    margin: 0;
 }
 /*scrollbar 전체*/
 #swiper-wrapper::-webkit-scrollbar{
@@ -85,7 +90,7 @@
     text-align: right;
     padding: 5px;
 }
-.other-swiper-slide{
+.other-swiper-slide, .swiper-slide {
     text-align: left;
     padding: 5px;
 }
@@ -96,6 +101,9 @@
     border-radius: 10px;
     margin-top: 5px;
     text-align: right;
+}
+.chat-name{
+    margin-top: 10px;
 }
 .other-chat-text{
     background-color: lightgreen;
@@ -158,6 +166,14 @@
     width: 500px;
     height: 455px;
     border-radius: 20px;
+    overflow: hidden;
+    display: block;
+}
+/*--유화이미지 img태그의 스타일--*/
+#draw-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 #answer-container{ /*display:none; 을 위한 div*/
     width: 100%;
