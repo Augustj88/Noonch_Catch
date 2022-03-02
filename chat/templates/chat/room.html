@@ -16,9 +16,9 @@
     <meta charset="UTF-8">
     <title>Noonch_Catch</title>
     <script>
-    $.ajaxSetup({
-        headers: { "X-CSRFToken": '{{csrf_token}}' }
-    });
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{csrf_token}}' }
+        });
     </script>
 </head>
 <script>
@@ -120,7 +120,7 @@
                         <img src="{% static 'image/pp1.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name0"></p>
+                        <p class="user0"></p>
                         <p class="score">score: <span id="score01">0</span>/10</p>
                     </div>
                 </div>
@@ -186,8 +186,8 @@
                     </div>
                 </div>
                 <div id="chat-typing-box">
-                    <input id="chat-message-input" type="text" placeholder="채팅을 입력하세요. :-)">
-                    <button id="chat-message-submit" type="button">
+                    <input id="chat-input" type="text" placeholder="채팅을 입력하세요. :-)">
+                    <button id="btn-chat" type="button">
                         <img id="test" src="{% static 'image/icon_up.png' %}"/>
                     </button>
                 </div>
@@ -230,10 +230,9 @@
     {{ room_name|json_script:"room-name" }}
     {{ request.user.username|json_script:"user_username" }}
 
-
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
-        const user_username = JSON.parse(document.getElementById('user_username').textContent)
+        const user_username = JSON.parse(document.getElementById('user_username').textContent);
 
         const chatSocket = new WebSocket(
             'ws://'
@@ -244,16 +243,55 @@
         );
 
         chatSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
+
+            const data = JSON.parse(e.data); //#swiper-slide-wrap >> swipe-slide >> chat-name/chat-text
             console.log(data)
-            document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
+            {#document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');#}
             {#document.querySelector('#user_in').value += (getCookie('nickname') + ', ');#}
+
+            const Position = document.querySelector('#swiper-slide-wrap');//user네임,말풍선 감쌀 자리
+            const myDiv = document.createElement('div'); //내채팅div: name, 말풍선 감쌀 div
+            const otherDiv = document.createElement('div'); //타인채팅div: name, 말풍선 감쌀 div
+            const chatNameP = document.createElement('div');
+            const chatTextP = document.createElement('div'); //타인말풍선
+            const mychatTextP = document.createElement('div'); //나의말풍선
+            const chatName = document.createTextNode(data.username);
+            const chatText= document.createTextNode(data.message + '\n');
+            const UserMe = getCookie('nickname');
+
+            if (data.username == getCookie('nickname')){ //채팅이름이 쿠키이름과 같다면!!
+
+                //setAttribute로 css부여함
+                myDiv.setAttribute("class", "my-swiper-slide");
+                chatNameP.setAttribute("class","chat-name");
+                mychatTextP.setAttribute("class", "my-chat-text");
+
+                //속성연결
+                Position.appendChild(myDiv); //Position안에 newDiv를 넣는다.
+                myDiv.appendChild(chatNameP);
+                myDiv.appendChild(mychatTextP);
+                chatNameP.appendChild(chatName);
+                mychatTextP.appendChild(chatText);
+            }
+            else{
+                //setAttribute로 css부여함
+                otherDiv.setAttribute("class", "other-swipe-slide");
+                chatNameP.setAttribute("class","chat-name");
+                chatTextP.setAttribute("class", "other-chat-text");
+
+                //속성연결
+                Position.appendChild(otherDiv); //Position안에 newDiv를 넣는다.
+                otherDiv.appendChild(chatNameP);
+                otherDiv.appendChild(chatTextP);
+                chatNameP.appendChild(chatName);
+                chatTextP.appendChild(chatText);
+            }
             $.ajax({
                 url: "{% url 'user' %}",
                 type: "POST",
                 data: JSON.stringify({'roomname': roomName}),
                 success: function(resultData) {
-                     {#TODO : 결과로 받은 resultData로 작업 !#}
+                     {#TODO : 결과로 받은 resultData로 작업 !#}//주석처리안하면 오류가 난다.
                     console.log(resultData)
 
                     for (i in resultData) {
@@ -268,21 +306,25 @@
                     console.log(error)
                 }
             });
+
+            document.querySelector('#swiper-slide-wrap').value += Position;
+            document.querySelector('.swiper-slide').value += (data.username + ': ' + data.message + '\n');
+            document.querySelector('#user-in').text += (getCookie('nickname') + ', ');
         };
 
         chatSocket.onclose = function (e) {
             console.error('Chat socket closed unexpectedly');
         };
 
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function (e) {
+        document.querySelector('#chat-input').focus();
+        document.querySelector('#chat-input').onkeyup = function (e) {
             if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
+                document.querySelector('#test').click();
             }
         };
 
-        document.querySelector('#chat-message-submit').onclick = function (e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
+        document.querySelector('#test').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
                 'message': message,
@@ -298,121 +340,7 @@
                 }
             }
         }
-
     </script>
-
-
-{#    <script>#}
-{#        const roomName = JSON.parse(document.getElementById('room-name').textContent);#}
-{#        const user_username = JSON.parse(document.getElementById('user_username').textContent);#}
-{##}
-{#        const chatSocket = new WebSocket(#}
-{#            'ws://'#}
-{#            + window.location.host#}
-{#            + '/ws/chat/'#}
-{#            + roomName#}
-{#            + '/'#}
-{#        );#}
-{##}
-{#        chatSocket.onmessage = function (e) {#}
-{##}
-{#            const data = JSON.parse(e.data); //#swiper-slide-wrap >> swipe-slide >> chat-name/chat-text#}
-{#            console.log(data)#}
-{#            document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');#}
-            {#document.querySelector('#user_in').value += (getCookie('nickname') + ', ');#}
-{#            $.ajax({#}
-{#                url: "{% url 'user' %}",#}
-{#                type: "POST",#}
-{#                data: JSON.stringify({'roomname': roomName}),#}
-{#                success: function(resultData) {#}
-                     {#TODO : 결과로 받은 resultData로 작업 !#}
-{#                    console.log(resultData)#}
-{##}
-{#                    for (i in resultData) {#}
-{#                        for ( j of document.getElementsByClassName(`user${i}`))#}
-{#                        {#}
-{#                            j.innerText = resultData[i]#}
-{#                        }#}
-{#                        console.log(i, resultData[i])#}
-{#                    }#}
-{#                },#}
-{#                error: function(error) {#}
-{#                    console.log(error)#}
-{#                }#}
-{#            });#}
-{##}
-{#            const Position = document.querySelector('#swiper-slide-wrap');//user네임,말풍선 감쌀 자리#}
-{#            const myDiv = document.createElement('div'); //내채팅div: name, 말풍선 감쌀 div#}
-{#            const otherDiv = document.createElement('div'); //타인채팅div: name, 말풍선 감쌀 div#}
-{#            const chatNameP = document.createElement('div');#}
-{#            const chatTextP = document.createElement('div'); //타인말풍선#}
-{#            const mychatTextP = document.createElement('div'); //나의말풍선#}
-{#            const chatName = document.createTextNode(data.username);#}
-{#            const chatText= document.createTextNode(data.message + '\n');#}
-{#            const UserMe = getCookie('nickname');#}
-{##}
-{#            if (data.username == getCookie('nickname')){ //채팅이름이 쿠키이름과 같다면!!#}
-{##}
-{#                //setAttribute로 css부여함#}
-{#                myDiv.setAttribute("class", "my-swiper-slide");#}
-{#                chatNameP.setAttribute("class","chat-name");#}
-{#                mychatTextP.setAttribute("class", "my-chat-text");#}
-{##}
-{#                //속성연결#}
-{#                Position.appendChild(myDiv); //Position안에 newDiv를 넣는다.#}
-{#                myDiv.appendChild(chatNameP);#}
-{#                myDiv.appendChild(mychatTextP);#}
-{#                chatNameP.appendChild(chatName);#}
-{#                mychatTextP.appendChild(chatText);#}
-{#            }#}
-{#            else{#}
-{#                //setAttribute로 css부여함#}
-{#                otherDiv.setAttribute("class", "other-swipe-slide");#}
-{#                chatNameP.setAttribute("class","chat-name");#}
-{#                chatTextP.setAttribute("class", "other-chat-text");#}
-{##}
-{#                //속성연결#}
-{#                Position.appendChild(otherDiv); //Position안에 newDiv를 넣는다.#}
-{#                otherDiv.appendChild(chatNameP);#}
-{#                otherDiv.appendChild(chatTextP);#}
-{#                chatNameP.appendChild(chatName);#}
-{#                chatTextP.appendChild(chatText);#}
-{#            }#}
-{##}
-            {#document.querySelector('#swiper-slide-wrap').value += Position;#}
-            {#document.querySelector('.swiper-slide').value += (data.username + ': ' + data.message + '\n');#}
-            {#document.querySelector('#user-in').text += (getCookie('nickname') + ', ');#}
-{#        };#}
-{##}
-{#        chatSocket.onclose = function (e) {#}
-{#            console.error('Chat socket closed unexpectedly');#}
-{#        };#}
-{##}
-{#        document.querySelector('#chat-input').focus();#}
-{#        document.querySelector('#chat-input').onkeyup = function (e) {#}
-{#            if (e.keyCode === 13) {  // enter, return#}
-{#                document.querySelector('#test').click();#}
-{#            }#}
-{#        };#}
-{##}
-{#        document.querySelector('#test').onclick = function (e) {#}
-{#            const messageInputDom = document.querySelector('#chat-input');#}
-{#            const message = messageInputDom.value;#}
-{#            chatSocket.send(JSON.stringify({#}
-{#                'message': message,#}
-{#                'username': getCookie('nickname'),#}
-{#            }));#}
-{#            messageInputDom.value = '';#}
-{#        };#}
-{#        function getCookie(cookie_name) {#}
-{#            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {#}
-{#                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기#}
-{#                if (x == cookie_name) {#}
-{#                    return unescape(y); // unescape로 디코딩 후 값 리턴#}
-{#                }#}
-{#            }#}
-{#        }#}
-{#    </script>#}
 
 </body>
 
