@@ -35,18 +35,22 @@
         });
     });
 
-    //start버튼 눌렀을 때, html다르게 띄우기
     $(document).ready(function(){
         const showPlay = $('#play-container')
         const showMain = $('#main-container')
         const playBtn = $('#start-btn')
 
+        //start버튼 클릭시, html다르게 띄우기
         playBtn.click(function(){
            showMain.hide();
            showPlay.show();
         });
-    });
 
+        //채팅창 스크롤 하단(최신내용) 포커스 되도록!
+        $("#test").click(function(){
+            $("#swiper-wrapper").animate({ scrollTop: $(document).height() }, 500);
+        });
+    });
 </script>
 
 <body>
@@ -55,7 +59,7 @@
         <img id="bgm-on" class="bgm-icon" data-play="1" src="{% static 'image/icon_bgmon.png' %}"/>
         <img id="bgm-off" class="bgm-icon" data-play="0" src="{% static 'image/icon_bgmoff.png' %}"/>
     </div>
-    <audio id="MyAudio" autoplay loop>
+    <audio id="MyAudio" autoplay loop onloadstart="this.volume=0.05">
         <source id="Audio" class="audio" src="{% static 'image/Bubble%20Bath%20-%20The%20Green%20Orbs.mp3' %}" allow="autoplay" type="audio/mp3"/>
     </audio>
     <div id="logo-wrap">
@@ -70,31 +74,31 @@
                     <div class="profile-img-box">
                         <img class="profile-img" src="{% static 'image/pp1.png' %}">
                     </div>
-                    <p>user01</p>
+                    <p class="user0"></p>
                 </div>
                 <div class="profile-user">
                     <div class="profile-img-box">
                         <img class="profile-img" src="{% static 'image/pp2.png' %}">
                     </div>
-                    <p>user02</p>
+                    <p class="user1"></p>
                 </div>
                 <div class="profile-user">
                     <div class="profile-img-box">
                         <img class="profile-img" src="{% static 'image/pp3.png' %}">
                     </div>
-                    <p>user03</p>
+                    <p class="user2"></p>
                 </div>
                 <div class="profile-user">
                     <div class="profile-img-box">
                         <img class="profile-img" src="{% static 'image/pp4.png' %}">
                     </div>
-                    <p>user04</p>
+                    <p class="user3"></p>
                 </div>
                 <div class="profile-user">
                     <div class="profile-img-box">
                         <img class="profile-img" src="{% static 'image/pp5.png' %}">
                     </div>
-                    <p>user05</p>
+                    <p class="user4"></p>
                 </div>
             </div>
             <input id="start-btn" type="button" value="START GAME">
@@ -111,7 +115,7 @@
                         <img src="{% static 'image/pp1.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name">user01</p>
+                        <p class="name0"></p>
                         <p class="score">score: <span id="score01">0</span>/10</p>
                     </div>
                 </div>
@@ -120,7 +124,7 @@
                         <img src="{% static 'image/pp2.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name">user02</p>
+                        <p class="user1"></p>
                         <p class="score">score: <span>6</span>/10</p>
                     </div>
                 </div>
@@ -129,7 +133,7 @@
                         <img src="{% static 'image/pp3.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name">user03</p>
+                        <p class="user2"></p>
                         <p class="score">score: <span>8</span>/10</p>
                     </div>
                 </div>
@@ -138,7 +142,7 @@
                         <img src="{% static 'image/pp4.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name">user04</p>
+                        <p class="user3"></p>
                         <p class="score">score: 8/10</p>
                     </div>
                 </div>
@@ -147,7 +151,7 @@
                         <img src="{% static 'image/pp5.png' %}">
                     </div>
                     <div class="player-info">
-                        <p class="name">user05</p>
+                        <p class="user4"></p>
                         <p class="score">score: <span>4</span>/10</p>
                     </div>
                 </div>
@@ -158,17 +162,19 @@
                     <div id="swiper-wrapper">
                         <!--슬라이드 내용 / chat대화-->
                         <div id="swiper-slide-wrap">
-                            <input id="user-in" type="text">
+                            <!-- 채팅 말풍선 예시
+                            <span id="user-in">user01</span>
                             <input id="chat-log" type="textarea">
+                            <div class="swiper-slide"></div>
                             <div class="my-swiper-slide">
                                 <div class="chat-name">myname</div>
                                 <span class="my-chat-text">안녕하세요??</span>
                             </div>
-                            <div class="other-swiper-slide">
-                                <div class="chat-name">username</div>
-                                <span class="other-chat-text">안녕하세요??</span>
+                            <div id="other-swiper-slide" class="other-swiper-slide">
+                                <div id="chat-name" class="chat-name"></div>
+                                <span id="other-chat-text" class="other-chat-text"></span>
                             </div>
-
+                            -->
                         </div>
                     </div>
                 </div>
@@ -182,6 +188,9 @@
             <!-- Draw section -->
             <div id="draw-box">
                 <div id="draw-img">
+                    <!--** 여기에 유화 이미지를 넣습니다! **-->
+                    <!--** 밑에 태그는 지워주시고 img태그로 넣어주세요. 그래야 스타일적용가능 **-->
+                    <img src="{% static 'image/sample.jpg' %}"/>
                     <div id="answer-container">
                         <div id="answer-wrap">
                             <div id="correct">✨정답입니다!</div>
@@ -204,21 +213,90 @@
     </div>
 
 
-<div id="eunjoo">
-    <!--Eunjoo-->
-    유저입장창<input id="user_in" type="text" size="100">
-    모든대화<textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    입력창<input id="chat-message-input" type="text" size="100"><br>
-    버튼<input id="chat-message-submit" type="button" value="Send">
+{#    <!--Eunjoo-->#}
+{#    유저입장창<input id="user_in" type="text" size="100">#}
+{#    모든대화<textarea id="chat-log" cols="100" rows="20"></textarea><br>#}
+{#    입력창<input id="chat-message-input" type="text" size="100"><br>#}
+{#    버튼<input id="chat-message-submit" type="button" value="Send">#}
 
     <div id="user-hello"> </div>
     {{ room_name|json_script:"room-name" }}
     {{ request.user.username|json_script:"user_username" }}
-</div>
+
+        <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const user_username = JSON.parse(document.getElementById('user_username').textContent)
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            console.log(data)
+            document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
+            {#document.querySelector('#user_in').value += (getCookie('nickname') + ', ');#}
+            $.ajax({
+                url: "{% url 'user' %}",
+                type: "POST",
+                data: JSON.stringify({'roomname': roomName}),
+                success: function(resultData) {
+                     {#TODO : 결과로 받은 resultData로 작업 !#}
+                    console.log(resultData)
+
+                    for (i in resultData) {
+                        for ( j of document.getElementsByClassName(`user${i}`))
+                        {
+                            j.innerText = resultData[i]
+                        }
+                        console.log(i, resultData[i])
+                    }
+                },
+                error: function(error) {
+                    console.log(error)
+                }
+            });
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'username': getCookie('nickname'),
+            }));
+            messageInputDom.value = '';
+        };
+        function getCookie(cookie_name) {
+            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {
+                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
+                if (x == cookie_name) {
+                    return unescape(y); // unescape로 디코딩 후 값 리턴
+                }
+            }
+        }
+
+    </script>
+
 
 {#    <script>#}
 {#        const roomName = JSON.parse(document.getElementById('room-name').textContent);#}
-{#        const user_username = JSON.parse(document.getElementById('user_username').textContent)#}
+{#        const user_username = JSON.parse(document.getElementById('user_username').textContent);#}
 {##}
 {#        const chatSocket = new WebSocket(#}
 {#            'ws://'#}
@@ -229,10 +307,73 @@
 {#        );#}
 {##}
 {#        chatSocket.onmessage = function (e) {#}
-{#            const data = JSON.parse(e.data);#}
+{##}
+{#            const data = JSON.parse(e.data); //#swiper-slide-wrap >> swipe-slide >> chat-name/chat-text#}
 {#            console.log(data)#}
-{#            document.querySelector('#swiper-slide-wrap').value += (data.username + ': ' + data.message + '\n');#}
-{#            document.querySelector('#user-in').text += (getCookie('nickname') + ', ');#}
+{#            document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');#}
+            {#document.querySelector('#user_in').value += (getCookie('nickname') + ', ');#}
+{#            $.ajax({#}
+{#                url: "{% url 'user' %}",#}
+{#                type: "POST",#}
+{#                data: JSON.stringify({'roomname': roomName}),#}
+{#                success: function(resultData) {#}
+                     {#TODO : 결과로 받은 resultData로 작업 !#}
+{#                    console.log(resultData)#}
+{##}
+{#                    for (i in resultData) {#}
+{#                        for ( j of document.getElementsByClassName(`user${i}`))#}
+{#                        {#}
+{#                            j.innerText = resultData[i]#}
+{#                        }#}
+{#                        console.log(i, resultData[i])#}
+{#                    }#}
+{#                },#}
+{#                error: function(error) {#}
+{#                    console.log(error)#}
+{#                }#}
+{#            });#}
+{##}
+{#            const Position = document.querySelector('#swiper-slide-wrap');//user네임,말풍선 감쌀 자리#}
+{#            const myDiv = document.createElement('div'); //내채팅div: name, 말풍선 감쌀 div#}
+{#            const otherDiv = document.createElement('div'); //타인채팅div: name, 말풍선 감쌀 div#}
+{#            const chatNameP = document.createElement('div');#}
+{#            const chatTextP = document.createElement('div'); //타인말풍선#}
+{#            const mychatTextP = document.createElement('div'); //나의말풍선#}
+{#            const chatName = document.createTextNode(data.username);#}
+{#            const chatText= document.createTextNode(data.message + '\n');#}
+{#            const UserMe = getCookie('nickname');#}
+{##}
+{#            if (data.username == getCookie('nickname')){ //채팅이름이 쿠키이름과 같다면!!#}
+{##}
+{#                //setAttribute로 css부여함#}
+{#                myDiv.setAttribute("class", "my-swiper-slide");#}
+{#                chatNameP.setAttribute("class","chat-name");#}
+{#                mychatTextP.setAttribute("class", "my-chat-text");#}
+{##}
+{#                //속성연결#}
+{#                Position.appendChild(myDiv); //Position안에 newDiv를 넣는다.#}
+{#                myDiv.appendChild(chatNameP);#}
+{#                myDiv.appendChild(mychatTextP);#}
+{#                chatNameP.appendChild(chatName);#}
+{#                mychatTextP.appendChild(chatText);#}
+{#            }#}
+{#            else{#}
+{#                //setAttribute로 css부여함#}
+{#                otherDiv.setAttribute("class", "other-swipe-slide");#}
+{#                chatNameP.setAttribute("class","chat-name");#}
+{#                chatTextP.setAttribute("class", "other-chat-text");#}
+{##}
+{#                //속성연결#}
+{#                Position.appendChild(otherDiv); //Position안에 newDiv를 넣는다.#}
+{#                otherDiv.appendChild(chatNameP);#}
+{#                otherDiv.appendChild(chatTextP);#}
+{#                chatNameP.appendChild(chatName);#}
+{#                chatTextP.appendChild(chatText);#}
+{#            }#}
+{##}
+            {#document.querySelector('#swiper-slide-wrap').value += Position;#}
+            {#document.querySelector('.swiper-slide').value += (data.username + ': ' + data.message + '\n');#}
+            {#document.querySelector('#user-in').text += (getCookie('nickname') + ', ');#}
 {#        };#}
 {##}
 {#        chatSocket.onclose = function (e) {#}
@@ -263,109 +404,8 @@
 {#                }#}
 {#            }#}
 {#        }#}
-{##}
 {#    </script>#}
 
-
-    <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
-        const user_username = JSON.parse(document.getElementById('user_username').textContent)
-
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + roomName
-            + '/'
-        );
-
-        chatSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            console.log(data)
-            document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
-            document.querySelector('#user-in').text += (getCookie('nickname') + ', ');
-        };
-
-        chatSocket.onclose = function (e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-
-        document.querySelector('#chat-input').focus();
-        document.querySelector('#chat-input').onkeyup = function (e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#test').click();
-            }
-        };
-
-        document.querySelector('#test').onclick = function (e) {
-            const messageInputDom = document.querySelector('#chat-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message,
-                'username': getCookie('nickname'),
-            }));
-            messageInputDom.value = '';
-        };
-        function getCookie(cookie_name) {
-            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {
-                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
-                if (x == cookie_name) {
-                    return unescape(y); // unescape로 디코딩 후 값 리턴
-                }
-            }
-        }
-
-    </script>
-
-    <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
-        const user_username = JSON.parse(document.getElementById('user_username').textContent)
-
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + roomName
-            + '/'
-        );
-
-        chatSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            console.log(data)
-            document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');
-            document.querySelector('#user_in').value += (getCookie('nickname') + ', ');
-        };
-
-        chatSocket.onclose = function (e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function (e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
-
-        document.querySelector('#chat-message-submit').onclick = function (e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message,
-                'username': getCookie('nickname'),
-            }));
-            messageInputDom.value = '';
-        };
-        function getCookie(cookie_name) {
-            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {
-                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기 
-                if (x == cookie_name) {
-                    return unescape(y); // unescape로 디코딩 후 값 리턴 
-                }
-            }
-        }
-
-    </script>
 </body>
 
 </html>
