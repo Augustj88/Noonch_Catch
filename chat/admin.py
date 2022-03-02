@@ -1,7 +1,5 @@
-# from django.contrib import admin
-# from .models import UserGroup
-#
-# class UserGroupAdmin(admin.ModelAdmin):
-#
-#     """ enable chat group admin"""
-#     list_display = ('nickname')
+from django.contrib import admin
+from .models import Room, Pic
+
+admin.site.register(Room)
+admin.site.register(Pic)

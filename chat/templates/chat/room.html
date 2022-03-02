@@ -15,6 +15,11 @@
 
     <meta charset="UTF-8">
     <title>Noonch_Catch</title>
+    <script>
+    $.ajaxSetup({
+        headers: { "X-CSRFToken": '{{csrf_token}}' }
+    });
+    </script>
 </head>
 <script>
     $(document).ready(function(){
@@ -164,6 +169,7 @@
                         <div id="swiper-slide-wrap">
                             <!-- 채팅 말풍선 예시
                             <span id="user-in">user01</span>
+
                             <input id="chat-log" type="textarea">
                             <div class="swiper-slide"></div>
                             <div class="my-swiper-slide">
@@ -175,12 +181,13 @@
                                 <span id="other-chat-text" class="other-chat-text"></span>
                             </div>
                             -->
+
                         </div>
                     </div>
                 </div>
                 <div id="chat-typing-box">
-                    <input id="chat-input" type="text" placeholder="채팅을 입력하세요. :-)">
-                    <button id="btn-chat" type="button">
+                    <input id="chat-message-input" type="text" placeholder="채팅을 입력하세요. :-)">
+                    <button id="chat-message-submit" type="button">
                         <img id="test" src="{% static 'image/icon_up.png' %}"/>
                     </button>
                 </div>
@@ -223,7 +230,8 @@
     {{ room_name|json_script:"room-name" }}
     {{ request.user.username|json_script:"user_username" }}
 
-        <script>
+
+    <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const user_username = JSON.parse(document.getElementById('user_username').textContent)
 
