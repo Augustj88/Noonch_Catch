@@ -5,56 +5,56 @@
     <link rel='stylesheet' href="{% static 'css/play.css' %}">
 {% endblock %} <!-- block영역 표시/꼭 마침을 해줘야함 -->
 
-{% block jquery %}
-<script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
-        const user_username = JSON.parse(document.getElementById('user_username').textContent)
-
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + roomName
-            + '/'
-        );
-
-        chatSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            console.log(data)
-            document.querySelector('#swiper-slide-wrap').value += (data.username + ': ' + data.message + '\n');
-            document.querySelector('#chat-name').value += (getCookie('nickname') + ', ');
-        };
-
-        chatSocket.onclose = function (e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-
-        document.querySelector('#chat-input').focus();
-        document.querySelector('#chat-input').onkeyup = function (e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#test').click();
-            }
-        };
-
-        document.querySelector('#test').onclick = function (e) {
-            const messageInputDom = document.querySelector('#chat-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message,
-                'username': getCookie('nickname'),
-            }));
-            messageInputDom.value = '';
-        };
-        function getCookie(cookie_name) {
-            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {
-                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
-                if (x == cookie_name) {
-                    return unescape(y); // unescape로 디코딩 후 값 리턴
-                }
-            }
-        }
-
-    </script>
+{#{% block jquery %}#}
+{#<script>#}
+{#        const roomName = JSON.parse(document.getElementById('room-name').textContent);#}
+{#        const user_username = JSON.parse(document.getElementById('user_username').textContent)#}
+{##}
+{#        const chatSocket = new WebSocket(#}
+{#            'ws://'#}
+{#            + window.location.host#}
+{#            + '/ws/chat/'#}
+{#            + roomName#}
+{#            + '/'#}
+{#        );#}
+{##}
+{#        chatSocket.onmessage = function (e) {#}
+{#            const data = JSON.parse(e.data);#}
+{#            console.log(data)#}
+{#            document.querySelector('#swiper-slide-wrap').value += (data.username + ': ' + data.message + '\n');#}
+{#            document.querySelector('#chat-name').value += (getCookie('nickname') + ', ');#}
+{#        };#}
+{##}
+{#        chatSocket.onclose = function (e) {#}
+{#            console.error('Chat socket closed unexpectedly');#}
+{#        };#}
+{##}
+{#        document.querySelector('#chat-input').focus();#}
+{#        document.querySelector('#chat-input').onkeyup = function (e) {#}
+{#            if (e.keyCode === 13) {  // enter, return#}
+{#                document.querySelector('#test').click();#}
+{#            }#}
+{#        };#}
+{##}
+{#        document.querySelector('#test').onclick = function (e) {#}
+{#            const messageInputDom = document.querySelector('#chat-input');#}
+{#            const message = messageInputDom.value;#}
+{#            chatSocket.send(JSON.stringify({#}
+{#                'message': message,#}
+{#                'username': getCookie('nickname'),#}
+{#            }));#}
+{#            messageInputDom.value = '';#}
+{#        };#}
+{#        function getCookie(cookie_name) {#}
+{#            var x, y; var val = document.cookie.split(';'); for (var i = 0; i < val.length; i++) {#}
+{#                x = val[i].substr(0, val[i].indexOf('=')); y = val[i].substr(val[i].indexOf('=') + 1); x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기#}
+{#                if (x == cookie_name) {#}
+{#                    return unescape(y); // unescape로 디코딩 후 값 리턴#}
+{#                }#}
+{#            }#}
+{#        }#}
+{##}
+{#    </script>#}
 <script>
     //문제 정답/오답 결과 알려주는 창
     $(document).ready(function(){
@@ -89,13 +89,13 @@
                     failed.hide();
                 }
                 //**조건문 수정 필요: 다른 플레이어가 user보다 먼저 10점을 냈을 때,
-                {#else {#}
-                {#    Modal.show();#}
-                {#    conWin.hide();#}
-                {#    complete.hide();#}
-                {#    conLose.show();#}
-                {#    failed.show();#}
-                {#}#}
+                else {
+                    Modal.show();
+                    conWin.hide();
+                    complete.hide();
+                    conLose.show();
+                    failed.show();
+                }
                 setTimeout(function(){
                     Modal.hide();
                 }, 3000);
