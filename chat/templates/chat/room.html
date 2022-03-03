@@ -233,7 +233,7 @@
     {{ room_name|json_script:"room-name" }}
     {{ request.user.username|json_script:"user_username" }}
 
-    <script>
+        <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const user_username = JSON.parse(document.getElementById('user_username').textContent);
         var answerlist = [];
@@ -340,25 +340,19 @@
                         console.log(testAnswer) //기니피그
 
                         if (quizImg.style.display = 'block') {
-                            if (data.message == '#시작') {
-                                correct.style.display = 'none';
-                            }
-                            else {
-                                answerlist.push(testAnswer)
-                                console.log('레전드: ', answerlist)
-                                console.log('지금 문제 정답:', answerlist[answerlist.length-1])
+                            answerlist.push(testAnswer)
+                            console.log('레전드: ', answerlist)
+                            console.log('지금 문제 정답:', answerlist[answerlist.length-1])
 
-                                console.log('**' + data.message)
+                            console.log('**' + data.message)
 
-                                resultCon.style.display = 'block'; //결과창(div) 띄우기
-                                correct.style.display = 'block'; //정답입니다 띄우기
-                                wrong.style.display = 'none'; //오답입니다 가리기
-                                quizImg.style.display = 'none'; //이미지가리기
-                                setTimeout(function() { //초뒤 결과창 사라지기
-                                    resultCon.style.display = 'none';
-                                }, 3000);
-                            }
-
+                            resultCon.style.display = 'block'; //결과창(div) 띄우기
+                            correct.style.display = 'block'; //정답입니다 띄우기
+                            wrong.style.display = 'none'; //오답입니다 가리기
+                            quizImg.style.display = 'none'; //이미지가리기
+                            setTimeout(function() { //초뒤 결과창 사라지기
+                                resultCon.style.display = 'none';
+                            }, 3000);
                         }
                     }
                 })
