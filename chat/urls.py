@@ -5,5 +5,6 @@ urlpatterns = [
     path('room/<str:room_name>/', views.room, name='room'),
     path('ending/', views.ending, name='ending'),
     path('user/', views.get_user, name='user'),
+    path('test1/', views.post_pic),
 ]
 
