@@ -19,11 +19,11 @@
 </a>
 <h3>
  
- |FRONTEND| | 
+ |FRONTEND| 정유진, 박정훈 | 
 |:---:|:---:| 
- |BACKEND| |
+ |BACKEND| 이은주, 성유창, 김동우 |
  |유화제작| |
- |EC2| |
+ |EC2| 이은주 |
  
  <h2> :rocket: 기술
  
