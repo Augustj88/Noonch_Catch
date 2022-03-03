@@ -25,21 +25,25 @@ SECRET_KEY = 'django-insecure-s_wkr(tq#t%)952s@v21%ppsh(4&^c*1)vof)(ir7m3-3og^-e
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['0.0.0.0:8000', 'localhost','127.0.0.1', '3.34.189.140'
-]
-
-CORS_ORIGIN_ALLOW_ALL = False
-
-CORS_ORIGIN_WHITELIST = (
-
-       'http://3.34.189.140',
-
-)
 #
-# ALLOWED_HOSTS=['*']
-# CORS_ORIGIN_ALLOW_ALL = True
+# ALLOWED_HOSTS = ['0.0.0.0:8000', 'localhost','127.0.0.1', '3.34.189.140'
+# ]
+#
+# CORS_ORIGIN_ALLOW_ALL = False
+#
+# CORS_ORIGIN_WHITELIST = (
+#
+#        'http://3.34.189.140',
+#
+# )
+# #
+# # ALLOWED_HOSTS=['*']
+# # CORS_ORIGIN_ALLOW_ALL = True
 
+
+# 아래는 새로 작성
+CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:8000' ,'http://localhost:8000', 'http://3.34.189.140:8000','3.34.189.140' ] # 요청을 받아도 되는 리스트를 작성하는거에요!
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
