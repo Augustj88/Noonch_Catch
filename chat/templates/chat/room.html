@@ -234,10 +234,9 @@
     {{ request.user.username|json_script:"user_username" }}
 
     <script>
-        var answerlist = ['시작']
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const user_username = JSON.parse(document.getElementById('user_username').textContent);
-
+        var answerlist = [];
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
@@ -250,8 +249,6 @@
 
             const data = JSON.parse(e.data); //#swiper-slide-wrap >> swipe-slide >> chat-name/chat-text
             console.log(data)
-            {#document.querySelector('#chat-log').value += (data.username + ': ' + data.message + '\n');#}
-            {#document.querySelector('#user_in').value += (getCookie('nickname') + ', ');#}
 
             const Position = document.querySelector('#swiper-slide-wrap');//user네임,말풍선 감쌀 자리
             const myDiv = document.createElement('div'); //내채팅div: name, 말풍선 감쌀 div
@@ -264,7 +261,6 @@
             const UserMe = getCookie('nickname');
 
             const quizImg = document.querySelector('#quiz_img');//퀴즈그림
-            {#const quizImg = document.querySelector('#draw-img img');//퀴즈그림#}
             const resultCon = document.querySelector('#answer-container');//정답결과창
             const correct = document.querySelector('#correct');//정답입니다. 문구
             const wrong = document.querySelector('#wrong');//오답입니다. 문구
@@ -272,6 +268,7 @@
             let text =  $('#chat-input').val() ///동우
 
             const mes = data.message
+            console.log('asd:', mes)
 
             if (data.username == getCookie('nickname')){ //채팅이름이 쿠키이름과 같다면!!
 
@@ -289,101 +286,7 @@
                 mychatTextP.appendChild(chatText);
 
 
-                {#console.log('***' + $('#ImgAnswer').attr('test_answer'))#}
-                {#const ImgAnswer = document.getElementById('ImgAnswer')#}
-
-                {#if (quizImg.style.display = 'block') {#}
-                {#    if (data.message == document.getElementById('ImgAnswer')) { //채팅메세지가 '#'+'정답'과 같다면!!#}
-                {#        resultCon.style.display = 'block'; //결과창(div) 띄우기#}
-                {#        correct.style.display = 'block'; //정답입니다 띄우기#}
-                {#        wrong.style.display = 'none'; //오답입니다 가리기#}
-                {#        quizImg.style.display = 'none'; //이미지가리기#}
-                {#        alert('정답');#}
-                {#        setTimeout(function() { //2초뒤 결과창 사라지기#}
-                {#            resultCon.style.display = 'none';#}
-                {#        }, 3000);#}
-                {#    }#}
-                {#    else if (mes.indexOf('#') == 0) { //채팅#}
-                {#        resultCon.style.display = 'block'; //결과창(div) 띄우기#}
-                {#        wrong.style.display = 'block'; //오답입니다 띄우기#}
-                {#        correct.style.display = 'none'; //정답입니다 가리기#}
-                {#        quizImg.style.display = 'none'; //이미지가리기#}
-                {#        setTimeout(function() { //2초뒤 결과창 사라지기#}
-                {#            resultCon.style.display = 'none';#}
-                {#        }, 3000);#}
-                {#    }#}
-                {# } #}
-
-                if (mes.includes('#')) { //#이 메세지에 포함된다면 다음을 실행한다.
-                    $.ajax({
-                        type: "POST", // GET 방식으로 요청한다.
-                        url: "/chat/test1/",
-                        data: {"text":text}, // 요청하면서 함께 줄 데이터 (GET 요청시엔 비워두세요)
-                        success: function (response) { // 서버에서 준 결과를 response라는 변수에 담음
-
-                            $('#quiz_img').attr("src",response["test_url"])
-                            $('#ImgAnswer').attr("text",response["test_answer"])
-
-
-
-                            const testAnswer = response.test_answer
-
-                            {#console.log(response) //test_url과 test_answer(그림의정답)#}
-                            {#console.log('*testAnswer:' + testAnswer) //test_answer(그림의정답) 키워드!!#}
-
-                            {#quizImg.style.display = 'none';  //퀴즈이미지는 처음에 none으로 보인다.#}
-                            {#setTimeout(function () { //10초뒤 혹은 채팅을 입력했을 때 이미지 뜬다.#}
-                            {#    quizImg.style.display = 'block';#}
-                            {# }, 10000);#}
-
-                            if (quizImg.style.display = 'block') { //유화이미지가 'block'됐을 때!(show)answerlist = []
-
-                                answerlist.push(testAnswer) //위 리스트에 testAnswer(키워드)담아준다.
-                                console.log('*유화/리스트:' + answerlist) //리스트띄우기
-                                console.log('*유화/리스트의 첫 번째 인덱스:' + answerlist[answerlist.length-2])
-
-
-                                if ('#' + answerlist[answerlist.length-2] == data.message) { //채팅메세지가 '#'+'정답'과 같다면!!
-                                    if (data.message == '#시작'){
-                                        quizImg.style.display = 'block';
-                                        correct.style.display = 'none';
-                                        wrong.style.display = 'none';
-                                    }
-                                    else {
-                                    console.log('**나의대답:' + data.message, '**유화정답:' + testAnswer)
-                                    resultCon.style.display = 'block'; //결과창(div) 띄우기
-                                    correct.style.display = 'block'; //정답입니다 띄우기
-                                    wrong.style.display = 'none'; //오답입니다 가리기
-                                    quizImg.style.display = 'none'; //이미지가리기
-                                    console.log('정답')
-                                    setTimeout(function() { //초뒤 결과창 사라지기
-                                        resultCon.style.display = 'none';
-                                        quizImg.style.display = 'block';
-                                    }, 3000);
-                                    }
-                                }
-                                else if (mes.indexOf('#') == 0) { //채팅
-                                    console.log('**나의대답:' + data.message, '**유화정답:' + testAnswer)
-                                    resultCon.style.display = 'block'; //결과창(div) 띄우기
-                                    wrong.style.display = 'block'; //오답입니다 띄우기
-                                    correct.style.display = 'none'; //정답입니다 가리기
-                                    quizImg.style.display = 'none'; //이미지가리기
-                                    console.log('실패')
-                                    setTimeout(function() { //2초뒤 결과창 사라지기
-                                        resultCon.style.display = 'none';
-                                        quizImg.style.display = 'block';
-                                    }, 3000);
-                                }
-                                {#else if (data.message == '#시작'){#}
-                                {#    quizImg.style.display = 'block'#}
-                                {#    correct.style.display = 'none'#}
-                                {#    #}
-                                {# }#}
-                                }
-                            }
-                    }) }
-            }
-            else{
+            } else{
                 //setAttribute로 css부여함
                 otherDiv.setAttribute("class", "other-swipe-slide");
                 chatNameP.setAttribute("class","chat-name");
@@ -401,15 +304,14 @@
                 type: "POST",
                 data: JSON.stringify({'roomname': roomName}),
                 success: function(resultData) {
-                     {#TODO : 결과로 받은 resultData로 작업 !#}//주석처리안하면 오류남
-                    {#console.log(resultData)#}
+                    console.log(resultData)
 
                     for (i in resultData) {
                         for ( j of document.getElementsByClassName(`user${i}`))
                         {
                             j.innerText = resultData[i]
                         }
-                        {#console.log(i, resultData[i])#}
+                        console.log(i, resultData[i])
                     }
                 },
                 error: function(error) {
@@ -417,9 +319,60 @@
                 }
             });
 
-            {#document.querySelector('#swiper-slide-wrap').value += Position;#}
-            {#document.querySelector('.swiper-slide').value += (data.username + ': ' + data.message + '\n');#}
-            {#document.querySelector('#user-in').text += (getCookie('nickname') + ', ');#}
+            if ((mes.includes('#') && ('#' + answerlist[answerlist.length-1] == data.message)) || mes.includes('#시작')) {
+                quizImg.style.display = 'none';
+                setTimeout(function () {
+                    quizImg.style.display = 'block';
+                }, 1000);
+
+                console.log('***' + $('#ImgAnswer').attr('test_answer'))
+                const ImgAnswer = document.getElementById('ImgAnswer')
+                $.ajax({
+                    type: "POST", // GET 방식으로 요청한다.
+                    url: "/chat/test1/",
+                    data: {"text":text}, // 요청하면서 함께 줄 데이터 (GET 요청시엔 비워두세요)
+                    success: function (response) { // 서버에서 준 결과를 response라는 변수에 담음
+
+                        $('#quiz_img').attr("src",response["test_url"])
+                        $('#ImgAnswer').attr("text",response["test_answer"])
+
+                        testAnswer = response.test_answer
+                        console.log(testAnswer) //기니피그
+
+                        if (quizImg.style.display = 'block') {
+                            if (data.message == '#시작') {
+                                correct.style.display = 'none';
+                            }
+                            else {
+                                answerlist.push(testAnswer)
+                                console.log('레전드: ', answerlist)
+                                console.log('지금 문제 정답:', answerlist[answerlist.length-1])
+
+                                console.log('**' + data.message)
+
+                                resultCon.style.display = 'block'; //결과창(div) 띄우기
+                                correct.style.display = 'block'; //정답입니다 띄우기
+                                wrong.style.display = 'none'; //오답입니다 가리기
+                                quizImg.style.display = 'none'; //이미지가리기
+                                setTimeout(function() { //초뒤 결과창 사라지기
+                                    resultCon.style.display = 'none';
+                                }, 3000);
+                            }
+
+                        }
+                    }
+                })
+            } else if (mes.includes('#')) {
+                { //채팅
+                    resultCon.style.display = 'block'; //결과창(div) 띄우기
+                    wrong.style.display = 'block'; //오답입니다 띄우기
+                    correct.style.display = 'none'; //정답입니다 가리기
+                    setTimeout(function() { //2초뒤 결과창 사라지기
+                        resultCon.style.display = 'none';
+                    }, 3000);
+                }
+            }
+
         };
 
         chatSocket.onclose = function (e) {
@@ -450,45 +403,6 @@
                 }
             }
         }
-        function test1() {
-            let text =  $('#chat-input').val()
-            $.ajax({
-                type: "POST", // GET 방식으로 요청한다.
-                url: "/chat/test1/",
-                data: {"text":text}, // 요청하면서 함께 줄 데이터 (GET 요청시엔 비워두세요)
-                success: function (response) { // 서버에서 준 결과를 response라는 변수에 담음
-
-                    $('#quiz_img').attr("src",response["test_url"])
-                    $('#ImgAnswer').attr("text",response["test_answer"])
-
-                    console.log(response.test_answer)
-
-
-
-                    {#console.log(response) // 서버에서 준 결과를 이용해서 나머지 코드를 작성#}
-                }
-            })
-        }
-
-        {#function test1() { //원본 #}
-        {#    let text =  $('#chat-input').val()#}
-        {#    $.ajax({#}
-        {#        type: "POST", // GET 방식으로 요청한다.#}
-        {#        url: "/chat/test1/",#}
-        {#        data: {"text":text}, // 요청하면서 함께 줄 데이터 (GET 요청시엔 비워두세요)#}
-        {#        success: function (response) { // 서버에서 준 결과를 response라는 변수에 담음#}
-        {##}
-        {#            $('#quiz_img').attr("src",response["test_url"])#}
-        {#            $('#ImgAnswer').attr("text",response["test_answer"])#}
-        {##}
-                    {#response[pic_answer]#}
-        {##}
-        {##}
-        {##}
-        {#            console.log(response) // 서버에서 준 결과를 이용해서 나머지 코드를 작성#}
-        {#        }#}
-        {#    })#}
-        {# }#}
     </script>
 
 </body>
