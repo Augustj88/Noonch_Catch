@@ -1,11 +1,10 @@
 # Noonch? catch!
 <img style="width: 500px;" src="https://raw.githubusercontent.com/Augustj88/Noonch_catch/master/chat/static/image/noonch_catch2.gif"/>
 
-<p>Noonch?Catch!는 플레이어들이 유화처리된 이미지의 키워드를 눈치껏 맞추는 게임입니다. 게임을 진행하는 중 게임에 참가한 다른 참가자들과 채팅을 나눌 수 있습니다.</p>
-
 <h2><a href="https://www.youtube.com/watch?v=uaULRx5ioYE">🎞</a>시연영상
 
-<h2> :house: 소개 및 기획 이유
+ <h2> :house: 소개 및 기획 이유</h2>
+<p>Noonch?Catch!는 플레이어들이 유화처리된 이미지의 키워드를 눈치껏 맞추는 게임입니다. 게임을 진행하는 중 플레이어는 게임에 참가한 다른 참가자들과 채팅을 나눌 수 있습니다.</p>
  
 <h2> :timer_clock: 개발기간
 
