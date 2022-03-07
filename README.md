@@ -10,7 +10,7 @@
 
 <h3>2022년 2월 22일 ~ 3월 3일
 
-<h2>:mage: 맴버구성
+<h2>:mage: 멤버구성
 
 <h3> 
  <a href="https://github.com/Paige1996/Noonch_catch/graphs/contributors">
@@ -22,7 +22,7 @@
  |FRONTEND| 정유진, 박정훈 | 
 |:---:|:---:| 
  |BACKEND| 이은주, 성유창, 김동우 |
- |유화제작| |
+ |유화제작| 김동우, 박정훈 |
  |EC2| 이은주 |
  
  <h2> :rocket: 기술
